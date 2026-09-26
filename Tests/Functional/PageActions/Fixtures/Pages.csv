@@ -1,0 +1,9 @@
+"pages"
+,"uid","pid","deleted","hidden","editlock","doktype","sys_language_uid","l10n_parent","sorting","title","slug","t3ver_state","perms_everybody","perms_userid","perms_groupid","perms_user","perms_group"
+,1,0,0,0,0,1,0,0,10,"Site root","/",0,31,0,0,0,0
+,2,1,0,0,0,1,0,0,20,"Visible page","/visible",0,31,0,0,0,0
+,3,1,0,0,0,1,1,2,30,"Translated page","/translated",0,31,0,0,0,0
+,4,1,0,1,0,1,0,0,40,"Hidden page","/hidden",0,31,0,0,0,0
+,5,1,0,0,1,1,0,0,50,"Locked page","/locked",0,31,0,0,0,0
+,6,1,0,0,0,1,0,0,60,"Page without permissions","/no-permissions",0,0,0,0,0,0
+,7,1,0,0,0,1,0,0,70,"Delete placeholder","/delete-placeholder",2,31,0,0,0,0

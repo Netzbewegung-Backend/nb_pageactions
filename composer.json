@@ -1,0 +1,76 @@
+{
+    "name": "netzbewegung/nb_pageactions",
+    "type": "typo3-cms-extension",
+    "description": "Page actions - Adds enable, disable and delete buttons for pages to the language comparison view of the page module",
+    "keywords": [
+        "typo3",
+        "backend",
+        "page-module",
+        "page-actions"
+    ],
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Christoph Freund",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "docs": "https://docs.typo3.org/p/netzbewegung/nb_pageactions/main/en-us/",
+        "source": "https://github.com/Netzbewegung-Backend/nb_pageactions",
+        "issues": "https://github.com/Netzbewegung-Backend/nb_pageactions/issues"
+    },
+    "require": {
+        "php": "^8.2",
+        "typo3/cms-backend": "^14.3",
+        "typo3/cms-core": "^14.3"
+    },
+    "require-dev": {
+        "bnf/phpstan-psr-container": "^1.1",
+        "friendsofphp/php-cs-fixer": "^3.22",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "typo3/coding-standards": "0.9.0",
+        "typo3/testing-framework": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Netzbewegung\\NbPageActions\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Netzbewegung\\NbPageActions\\Tests\\": "Tests"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "web-dir": ".Build/public",
+            "extension-key": "nb_pageactions",
+            "version": "0.1.0",
+            "skip-ter-packagist-import": true,
+            "Package": {
+                "providesPackages": {}
+            }
+        }
+    },
+    "scripts": {
+        "pre-autoload-dump": [
+            "[ -d \"config\" ] || cp -a ./Build/config.example ./config"
+        ],
+        "tests": [
+            "Build/Scripts/runTests.sh -s cgl",
+            "Build/Scripts/runTests.sh -s phpstan",
+            "Build/Scripts/runTests.sh -s functional"
+        ]
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "sort-packages": true,
+        "allow-plugins": {
+            "typo3/cms-composer-installers": true,
+            "typo3/class-alias-loader": true
+        }
+    }
+}

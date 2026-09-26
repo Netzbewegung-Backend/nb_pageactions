@@ -1,0 +1,153 @@
+name: Tests
+
+# Path filtering (docs-only changes skip): push and PR runs first detect
+# what changed (dorny/paths-filter). On docs-only changes the code jobs
+# (CGL, functional, PHPStan) skip with a green 'skipped' conclusion
+# — job-level gating on purpose, NOT workflow-level paths-ignore: the run
+# and its check runs still EXIST for the sha, so required-status checks
+# and branch protection keep working. Schedule and workflow_dispatch
+# always run (weekly drift checks / explicit human intent).
+# test-documentation.yml is deliberately NOT filtered — it is the workflow
+# that SHOULD run on docs changes.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+  schedule:
+    - cron: "0 3 * * 1"
+jobs:
+  # Changed-path detection for the docs-only skip logic (header comment
+  # above). 'code' is true when anything outside the docs-only set changed.
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            code:
+              - 'Classes/**'
+              - 'Configuration/**'
+              - 'Tests/**'
+              - 'Build/**'
+              - 'composer.json'
+              - 'ext_emconf.php'
+              - '.github/workflows/**'
+
+  early_cgl:
+    name: CGL
+    needs: changes
+    # docs-only changes skip; schedule/dispatch always run (see header)
+    if: ${{ github.event_name != 'push' && github.event_name != 'pull_request' || needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer update --no-progress
+
+      - name: PHP CS Fixer
+        run: Build/Scripts/runTests.sh -p 8.2 -s cgl -n
+
+  functional_tests:
+    name: "Functional Tests TYPO3 ${{ matrix.typo3 }}"
+    needs: changes
+    # docs-only changes skip; schedule/dispatch always run (see header)
+    if: ${{ github.event_name != 'push' && github.event_name != 'pull_request' || needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - typo3: "^14.3"
+            php: "8.2"
+          - typo3: "^14.3"
+            php: "8.4"
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: |
+          composer require --no-update typo3/cms-core:${{ matrix.typo3 }}
+          composer update --prefer-stable --no-progress
+
+      - name: Functional
+        run: Build/Scripts/runTests.sh -s functional -d sqlite -p ${{ matrix.php }}
+
+  phpstan:
+    name: PHPStan PHP 8.4
+    needs: changes
+    # docs-only changes skip; schedule/dispatch always run (see header)
+    if: ${{ github.event_name != 'push' && github.event_name != 'pull_request' || needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer update --no-progress
+
+      - name: PHPStan
+        run: XDEBUG_MODE="off" .Build/bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction --memory-limit 4G

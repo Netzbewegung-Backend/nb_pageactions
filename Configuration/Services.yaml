@@ -1,0 +1,23 @@
+# Configuration/Services.yaml
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Netzbewegung\NbPageActions\:
+    resource: '../Classes/*'
+
+  Netzbewegung\NbPageActions\Service\PageActionService:
+    public: true
+
+  # Used by the event listener, which is resolved through the container
+  Netzbewegung\NbPageActions\Service\PageActionSettings:
+    public: true
+
+  # Fluid resolves ViewHelpers through the container
+  Netzbewegung\NbPageActions\ViewHelpers\PageActionButtonsViewHelper:
+    public: true
+
+  Netzbewegung\NbPageActions\ViewHelpers\AllLabelsHiddenViewHelper:
+    public: true

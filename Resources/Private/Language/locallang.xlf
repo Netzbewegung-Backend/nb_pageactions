@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="EXT:nb_pageactions/Resources/Private/Language/locallang.xlf">
+        <header/>
+        <body>
+            <trans-unit id="showPageActionLabels" resname="showPageActionLabels">
+                <source>Show page action labels</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,7 @@
+"be_groups"
+,"uid","pid","deleted","title","tables_select","tables_modify","non_exclude_fields","groupMods","allowed_languages","TSconfig"
+,1,0,0,"Editors","pages","pages","pages:hidden","web_layout","",""
+,2,0,0,"Editors without hidden field","pages","pages","","web_layout","",""
+,3,0,0,"Editors without page modify","pages","","pages:hidden","web_layout","",""
+,4,0,0,"Editors for default language only","pages","pages","pages:hidden","web_layout","0",""
+,5,0,0,"Editors without delete","pages","pages","pages:hidden","web_layout","","options.disableDelete.pages = 1"

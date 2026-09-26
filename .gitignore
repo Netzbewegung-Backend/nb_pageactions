@@ -1,0 +1,19 @@
+# Directories
+/.Build/
+/.cache/
+/.idea/
+/.vscode/
+/config/
+/packages/autoload-tests/
+/var/
+
+
+# Files
+.php-cs-fixer.cache
+.phpunit.result.cache
+composer.lock
+opencode.jsonc
+
+# Directory patterns
+/Build/phpunit/.phpunit.cache/
+/Documentation-GENERATED-temp/

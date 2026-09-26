@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="EXT:nb_pageactions/Resources/Private/Language/locallang_tca.xlf">
+        <header/>
+        <body>
+            <trans-unit id="be_users.nbPageActionsHideAllActionLabels" resname="be_users.nbPageActionsHideAllActionLabels">
+                <source>Hide all action labels</source>
+            </trans-unit>
+            <trans-unit id="be_users.nbPageActionsHideAllActionLabels.description" resname="be_users.nbPageActionsHideAllActionLabels.description">
+                <source>Applies the "Show page action labels" setting of the page module to all action labels of the language columns, not only to the enable/disable and delete buttons.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

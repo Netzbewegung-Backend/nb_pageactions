@@ -1,0 +1,8 @@
+# Overrides the page module partial "PageLayout/LanguageColumns" of EXT:backend,
+# which renders the language columns incl. their "View webpage",
+# "Edit page properties" and "Translate" buttons in the language comparison view.
+#
+# The override path has to be registered for the composer package name of the
+# route that renders the view - the page module routes are provided by
+# typo3/cms-backend. See \TYPO3\CMS\Backend\View\BackendViewFactory::create().
+templates.typo3/cms-backend.10 = netzbewegung/nb_pageactions:Resources/Private/TemplateOverrides/typo3/cms-backend
