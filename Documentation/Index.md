@@ -27,6 +27,26 @@ Personal data) extends the label hiding of the page module to all action
 buttons of the language columns — *View page*, *Edit page properties*,
 *Translate* and the page action buttons of this extension.
 
+## Presets via user TSconfig
+
+Both switches can be preset for backend users via user TSconfig — and thus
+per backend group (`be_groups.TSconfig`). A user's own choice always wins
+over the TSconfig preset:
+
+```typoscript
+options.pageActions {
+    # 0: show the labels, 1: hide them (default)
+    hideLabels = 0
+
+    # preset of the user setting "Hide all action labels" (default: 0)
+    hideAllLabels = 1
+}
+```
+
+Priority of the label visibility: query parameter of the page module >
+user's own toggle (module data of the page module) > user/group TSconfig >
+extension default (hidden).
+
 ## Installation
 
 The extension requires TYPO3 14.3+ and PHP 8.2+:

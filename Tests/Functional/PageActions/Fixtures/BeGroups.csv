@@ -5,3 +5,5 @@
 ,3,0,0,"Editors without page modify","pages","","pages:hidden","web_layout","",""
 ,4,0,0,"Editors for default language only","pages","pages","pages:hidden","web_layout","0",""
 ,5,0,0,"Editors without delete","pages","pages","pages:hidden","web_layout","","options.disableDelete.pages = 1"
+,6,0,0,"Editors with page action TSconfig","pages","pages","pages:hidden","web_layout","","options.pageActions.hideLabels = 0
+options.pageActions.hideAllLabels = 1"

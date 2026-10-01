@@ -17,6 +17,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  * module. The page module renders its content before the button bar event is
  * dispatched, so the current request has the higher priority to make the
  * setting take effect immediately.
+ *
+ * Both switches can be preset via user TSconfig (and therefore per backend
+ * group as well), a user's own choice always wins over the TSconfig preset.
  */
 final class PageActionSettings
 {
@@ -29,13 +32,17 @@ final class PageActionSettings
     /**
      * Whether the label hiding applies to all action labels of the language
      * columns or only to the page action buttons of this extension. Configured
-     * as user setting in the backend user profile.
+     * as user setting in the backend user profile, presettable via the user
+     * TSconfig option "options.pageActions.hideAllLabels".
      */
     public function hidesAllActionLabels(): bool
     {
         $userSettings = $this->getBackendUser()->getUserSettings()->toArray();
+        if (array_key_exists(self::USER_SETTING_HIDE_ALL_LABELS, $userSettings)) {
+            return (bool)$userSettings[self::USER_SETTING_HIDE_ALL_LABELS];
+        }
 
-        return (bool)($userSettings[self::USER_SETTING_HIDE_ALL_LABELS] ?? false);
+        return $this->getTsConfigFlag('hideAllLabels') ?? false;
     }
 
     /**
@@ -56,9 +63,11 @@ final class PageActionSettings
         }
 
         $moduleData = $this->getBackendUser()->getModuleData(self::MODULE_IDENTIFIER);
-        $value = is_array($moduleData) ? $moduleData[self::PROPERTY] ?? true : true;
+        if (is_array($moduleData) && array_key_exists(self::PROPERTY, $moduleData)) {
+            return $this->isShown($moduleData[self::PROPERTY]) === false;
+        }
 
-        return $this->isShown($value) === false;
+        return $this->getTsConfigFlag('hideLabels') ?? true;
     }
 
     public function hideLabels(bool $hide): void
@@ -87,6 +96,26 @@ final class PageActionSettings
         }
 
         return null;
+    }
+
+    private function getTsConfigFlag(string $key): ?bool
+    {
+        $options = $this->getBackendUser()->getTSConfig()['options.'] ?? null;
+        if (!is_array($options)) {
+            return null;
+        }
+
+        $pageActions = $options['pageActions.'] ?? null;
+        if (!is_array($pageActions)) {
+            return null;
+        }
+
+        $value = $pageActions[$key] ?? null;
+        if (!is_string($value) || $value === '') {
+            return null;
+        }
+
+        return (bool)(int)$value;
     }
 
     private function isShown(mixed $value): bool

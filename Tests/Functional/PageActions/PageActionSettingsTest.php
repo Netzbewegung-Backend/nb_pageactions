@@ -284,6 +284,39 @@ final class PageActionSettingsTest extends FunctionalTestCase
         self::assertCount(1, $dropdown->getItems());
     }
 
+    #[Test]
+    public function groupTsConfigPresetsTheLabelVisibility(): void
+    {
+        $this->setUpBackendUser(8);
+
+        self::assertFalse($this->getSettings()->areLabelsHidden());
+    }
+
+    #[Test]
+    public function ownToggleOfTheUserWinsOverTheGroupTsConfig(): void
+    {
+        $this->setUpBackendUser(8);
+        $this->getSettings()->hideLabels(true);
+
+        self::assertTrue($this->getSettings()->areLabelsHidden());
+    }
+
+    #[Test]
+    public function groupTsConfigPresetsTheAllLabelsFlag(): void
+    {
+        $this->setUpBackendUser(8);
+
+        self::assertTrue($this->getSettings()->hidesAllActionLabels());
+    }
+
+    #[Test]
+    public function ownUserSettingWinsOverTheGroupTsConfig(): void
+    {
+        $this->setUpBackendUser(9);
+
+        self::assertFalse($this->getSettings()->hidesAllActionLabels());
+    }
+
     private function getSettings(): PageActionSettings
     {
         return $this->get(PageActionSettings::class);

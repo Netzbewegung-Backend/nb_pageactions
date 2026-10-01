@@ -7,3 +7,5 @@
 ,5,0,0,0,0,"editor_default_language_only","",4,"1","","{}"
 ,6,0,0,0,0,"editor_without_delete","",5,"1","","{}"
 ,7,0,0,0,1,"admin_hides_all_action_labels","",1,"1","a:2:{s:14:""emailMeAtLogin"";i:0;s:32:""nbPageActionsHideAllActionLabels"";i:1;}","{""nbPageActionsHideAllActionLabels"":true}"
+,8,0,0,0,0,"editor_with_label_tsconfig","",6,"1","","{}"
+,9,0,0,0,0,"editor_own_setting_overrides_tsconfig","",6,"1","a:2:{s:14:""emailMeAtLogin"";i:0;s:32:""nbPageActionsHideAllActionLabels"";i:0;}","{""nbPageActionsHideAllActionLabels"":false}"

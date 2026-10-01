@@ -17,6 +17,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the core view settings.
 - User setting "Hide all action labels" that applies the label hiding of
   the page module to all action buttons of the language columns.
+- User TSconfig presets `options.pageActions.hideLabels` and
+  `options.pageActions.hideAllLabels` to configure both switches per
+  backend group; a user's own choice always wins over the preset.
 - Functional test suite covering the permission matrix, the label
   visibility settings, the user setting registration and the button bar
   listener, with CSV fixtures.
