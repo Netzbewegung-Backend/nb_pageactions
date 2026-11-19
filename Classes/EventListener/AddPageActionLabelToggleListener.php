@@ -54,6 +54,7 @@ final class AddPageActionLabelToggleListener
 
         $this->applyRequestedState($request);
 
+        // @extensionScannerIgnoreLine (ModifyButtonBarEvent::getButtons)
         $buttons = $event->getButtons();
         foreach ($buttons as $position => $buttonGroups) {
             foreach ($buttonGroups as $group => $buttonsOfGroup) {

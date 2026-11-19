@@ -47,6 +47,7 @@ final class PageActionButtonsViewHelper extends AbstractViewHelper
         $buttons = [];
         foreach ($this->pageActionService->getActions(
             $languageColumn->getPageRecord(),
+            // @extensionScannerIgnoreLine (LanguageColumn::getContext)
             $languageColumn->getContext()->getReturnUrl()
         ) as $action) {
             $buttons[] = $this->renderButton($action, $showLabel);
